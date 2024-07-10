@@ -11,9 +11,16 @@ char cubo[6][3][3] = {{{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}},
 class Face {
     public:
     char (*facenumber)[3][3];
-    std::function<void()> myFunction;
-    Face(char (*valuecube)[3][3]){
-        facenumber = valuecube;
+    char (*up)[3][3];
+    char (*down)[3][3];
+    char (*left)[3][3];
+    char (*right)[3][3];
+    Face(char (*facenumber)[3][3], char(*up)[3][3], char(*down)[3][3], char(*left)[3][3], char(*right)[3][3]){
+        this->facenumber = facenumber;
+        this->up = up;
+        this->down = down;
+        this->left = left;
+        this->right = right;
     }
 
     void clockwise() {
@@ -47,12 +54,13 @@ class Face {
 int main(){
     //std::cout << cubo[0][1][1] << std::endl;
     //std::cout << (*W.facenumber)[1][1] << std::endl;
-    Face W(&(cubo[0]));
-    Face Y(&(cubo[1]));
-    Face R(&(cubo[2]));
-    Face O(&(cubo[3]));
-    Face B(&(cubo[4]));
-    Face G(&(cubo[5]));
+    //main, up, down, left, right
+    Face W(&(cubo[0]), &(cubo[4]), &(cubo[5]), &(cubo[3]), &(cubo[2]));
+    Face Y(&(cubo[1]), &(cubo[4]), &(cubo[5]), &(cubo[2]), &(cubo[3]));
+    Face R(&(cubo[2]), &(cubo[4]), &(cubo[5]), &(cubo[0]), &(cubo[1]));
+    Face O(&(cubo[3]), &(cubo[4]), &(cubo[5]), &(cubo[1]), &(cubo[0]));
+    Face B(&(cubo[4]), &(cubo[1]), &(cubo[0]), &(cubo[3]), &(cubo[2]));
+    Face G(&(cubo[5]), &(cubo[0]), &(cubo[1]), &(cubo[3]), &(cubo[2]));
 
 
     //testing
