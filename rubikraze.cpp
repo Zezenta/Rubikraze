@@ -1,7 +1,7 @@
 #include <iostream>
 #include <functional>
 
-char cubo[6][3][3] = {{{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}},
+char cube[6][3][3] = {{{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}},
                         {{'Y', 'Y', 'Y'}, {'Y', 'Y', 'Y'}, {'Y', 'Y', 'Y'}},
                         {{'R', 'R', 'R'}, {'R', 'R', 'R'}, {'R', 'R', 'R'}},
                         {{'O', 'O', 'O'}, {'O', 'O', 'O'}, {'O', 'O', 'O'}},
@@ -55,18 +55,18 @@ int main(){
     //std::cout << cubo[0][1][1] << std::endl;
     //std::cout << (*W.facenumber)[1][1] << std::endl;
     //main, up, down, left, right
-    Face W(&(cubo[0]), &(cubo[4]), &(cubo[5]), &(cubo[3]), &(cubo[2]));
-    Face Y(&(cubo[1]), &(cubo[4]), &(cubo[5]), &(cubo[2]), &(cubo[3]));
-    Face R(&(cubo[2]), &(cubo[4]), &(cubo[5]), &(cubo[0]), &(cubo[1]));
-    Face O(&(cubo[3]), &(cubo[4]), &(cubo[5]), &(cubo[1]), &(cubo[0]));
-    Face B(&(cubo[4]), &(cubo[1]), &(cubo[0]), &(cubo[3]), &(cubo[2]));
-    Face G(&(cubo[5]), &(cubo[0]), &(cubo[1]), &(cubo[3]), &(cubo[2]));
+    Face W(&(cube[0]), &(cube[4]), &(cube[5]), &(cube[3]), &(cube[2]));
+    Face Y(&(cube[1]), &(cube[4]), &(cube[5]), &(cube[2]), &(cube[3]));
+    Face R(&(cube[2]), &(cube[4]), &(cube[5]), &(cube[0]), &(cube[1]));
+    Face O(&(cube[3]), &(cube[4]), &(cube[5]), &(cube[1]), &(cube[0]));
+    Face B(&(cube[4]), &(cube[1]), &(cube[0]), &(cube[3]), &(cube[2]));
+    Face G(&(cube[5]), &(cube[0]), &(cube[1]), &(cube[3]), &(cube[2]));
 
 
     //testing
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 3; j++){
-            std::cout << cubo[0][i][j] << " ";
+            std::cout << cube[0][i][j] << " ";
         }
         std::cout << std::endl;
     }
@@ -74,7 +74,7 @@ int main(){
     W.anticlockwise();
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 3; j++){
-            std::cout << cubo[0][i][j] << " ";
+            std::cout << cube[0][i][j] << " ";
         }
         std::cout << std::endl;
     }
