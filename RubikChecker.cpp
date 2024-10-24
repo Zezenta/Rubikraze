@@ -28,4 +28,5 @@ int main(){
     std::cout << "G = " << sumas[2] << " \\    /" << std::endl;;
     std::cout << "O = " << sumas[3] << "   " << grupo2 << " /" << std::endl;
     std::cout << "Y = " << sumas[5] << " /   ";
+    std::cin.get();
 }
