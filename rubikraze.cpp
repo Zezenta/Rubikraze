@@ -197,16 +197,16 @@ int main(){
     //main, up, down, left, right
     Face W(&(cube[0]), &(cube[4]), BottomRow, &(cube[5]), TopRow, &(cube[3]), RightCol, &(cube[2]), LeftCol);
     Face Y(&(cube[1]), &(cube[4]), TopRow, &(cube[5]), BottomRow, &(cube[2]), RightCol, &(cube[3]), LeftCol);
-    Face R(&(cube[2]), &(cube[4]), RightCol, &(cube[5]), RightCol, &(cube[1]), LeftCol, &(cube[0]), RightCol);
-    Face O(&(cube[3]), &(cube[4]), LeftCol, &(cube[5]), LeftCol, &(cube[0]), LeftCol, &(cube[1]), RightCol);
-    Face B(&(cube[4]), &(cube[1]), TopRow, &(cube[0]), TopRow, &(cube[2]), TopRow, &(cube[3]), TopRow);
-    Face G(&(cube[5]), &(cube[0]), BottomRow, &(cube[1]), BottomRow, &(cube[2]), BottomRow, &(cube[3]), BottomRow);
+    Face R(&(cube[2]), &(cube[4]), RightCol, &(cube[5]), RightCol, &(cube[0]), RightCol, &(cube[1]), LeftCol);
+    Face O(&(cube[3]), &(cube[4]), LeftCol, &(cube[5]), LeftCol, &(cube[1]), RightCol, &(cube[0]), LeftCol);
+    Face B(&(cube[4]), &(cube[1]), TopRow, &(cube[0]), TopRow, &(cube[3]), TopRow, &(cube[2]), TopRow);
+    Face G(&(cube[5]), &(cube[0]), BottomRow, &(cube[1]), BottomRow, &(cube[3]), BottomRow, &(cube[2]), BottomRow);
     
 
 
     //testing
     printCube();
-    O.clockwise();
+    O.anticlockwise();
     printCube();
     std::cin.get();
     return 0;
