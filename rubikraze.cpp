@@ -2,13 +2,15 @@
 #include <functional>
 
 //this just declares the char values of each of 9 squares in each of 6 faces
-char cube[6][3][3] = {{{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}},
+//char cube[6][3][3] = {{{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}},
+char cube[6][3][3] = {{{'W', 'W', 'W'}, {'W', 'W', 'W'}, {'W', 'W', 'W'}},
                         {{'Y', 'Y', 'Y'}, {'Y', 'Y', 'Y'}, {'Y', 'Y', 'Y'}},
                         {{'R', 'R', 'R'}, {'R', 'R', 'R'}, {'R', 'R', 'R'}},
                         {{'O', 'O', 'O'}, {'O', 'O', 'O'}, {'O', 'O', 'O'}},
                         {{'B', 'B', 'B'}, {'B', 'B', 'B'}, {'B', 'B', 'B'}},
                         {{'G', 'G', 'G'}, {'G', 'G', 'G'}, {'G', 'G', 'G'}}};
 
+enum Border {TopRow, BottomRow, LeftCol, RightCol};
 
 
 class Face {
@@ -18,12 +20,29 @@ class Face {
     char (*down)[3][3]; //face down to it
     char (*left)[3][3]; //left
     char (*right)[3][3]; //right
-    Face(char (*facenumber)[3][3], char(*up)[3][3], char(*down)[3][3], char(*left)[3][3], char(*right)[3][3]){
+    Border up_border, down_border, left_border, right_border; //we make space for the indicators that will help us know how to affect squares in outer faces
+
+
+    Face(char (*facenumber)[3][3], char(*up)[3][3], Border up_border, char(*down)[3][3], Border down_border, char(*left)[3][3], Border left_border, char(*right)[3][3], Border right_border){
         this->facenumber = facenumber;
         this->up = up;
         this->down = down;
         this->left = left;
         this->right = right;
+
+        this->up_border = up_border;
+        this->down_border = down_border;
+        this->right_border = right_border;
+        this->left_border = left_border;
+    }
+
+    void getIndex(int i, Border border, int &row, int &col){ //get a value i, the border that will be affected, and the original addresses for the row and col variables 
+        switch (border){
+            case TopRow: row = 0; col = i; break;
+            case BottomRow: row = 2; col = i; break;
+            case LeftCol: row = i; col = 0; break;
+            case RightCol: row = i; col = 2; break;
+        }
     }
 
     void clockwise() {
@@ -40,22 +59,40 @@ class Face {
         }
 
         //for outer faces
-        char up_t[3];
-        char right_t[3];
-        char down_t[3];
-        char left_t[3];
+        char up_face_t[3];
+        char right_face_t[3];
+        char down_face_t[3];
+        char left_face_t[3];
+        int row, col;
+
         for(int i = 0; i < 3; i++){
-            up_t[i] = (*up)[2][i];
-            right_t[i] = (*right)[i][0];
-            down_t[i] = (*down)[0][i];
-            left_t[i] = (*left)[i][2];
+            getIndex(i, up_border, row, col);
+            up_face_t[i] = (*up)[row][col];
+
+            getIndex(i, right_border, row, col);
+            right_face_t[i] = (*right)[row][col];
+
+            getIndex(i, down_border, row, col);
+            down_face_t[i] = (*down)[row][col];
+
+            getIndex(i, left_border, row, col);
+            left_face_t[i] = (*left)[row][col];
         }
         for(int i = 0; i < 3; i++){
-            (*up)[2][i] = left_t[2-i];
-            (*right)[i][0] = up_t[i];
-            (*down)[0][i] = right_t[2-i];
-            (*left)[i][2] = down_t[i];
+            getIndex(i, up_border, row, col);
+            (*up)[row][col] = left_face_t[2 - i];
+
+            getIndex(i, right_border, row, col);
+            (*right)[row][col] = up_face_t[i];
+
+            getIndex(i, down_border, row, col);
+            (*down)[row][col] = right_face_t[2 - i];
+
+            getIndex(i, left_border, row, col);
+            (*left)[row][col] = down_face_t[i];
         }
+
+
     };
     void anticlockwise(){
         char t[3][3];
@@ -71,21 +108,38 @@ class Face {
         }
 
         //for outer faces
-        char up_t[3];
-        char right_t[3];
-        char down_t[3];
-        char left_t[3];
+        char up_face_t[3];
+        char right_face_t[3];
+        char down_face_t[3];
+        char left_face_t[3];
+        int col, row;
+
+
         for(int i = 0; i < 3; i++){
-            up_t[i] = (*up)[2][i];
-            right_t[i] = (*right)[i][0];
-            down_t[i] = (*down)[0][i];
-            left_t[i] = (*left)[i][2];
+            getIndex(i, up_border, row, col);
+            up_face_t[i] = (*up)[row][col];
+
+            getIndex(i, right_border, row, col);
+            right_face_t[i] = (*right)[row][col];
+
+            getIndex(i, down_border, row, col);
+            down_face_t[i] = (*down)[row][col];
+
+            getIndex(i, left_border, row, col);
+            left_face_t[i] = (*left)[row][col];
         }
         for(int i = 0; i < 3; i++){
-            (*up)[2][i] = right_t[i];
-            (*right)[i][0] = down_t[2-i];
-            (*down)[0][i] = left_t[i];
-            (*left)[i][2] = up_t[2-i];
+            getIndex(i, up_border, row, col);
+            (*up)[row][col] = right_face_t[2-i];
+
+            getIndex(i, right_border, row, col);
+            (*right)[row][col] = down_face_t[i];
+
+            getIndex(i, down_border, row, col);
+            (*down)[row][col] = left_face_t[2-i];
+
+            getIndex(i, left_border, row, col);
+            (*left)[row][col] = up_face_t[i];
         }
     }
 };
@@ -141,18 +195,18 @@ int main(){
     //std::cout << (*W.facenumber)[1][1] << std::endl;
 
     //main, up, down, left, right
-    Face W(&(cube[0]), &(cube[4]), &(cube[5]), &(cube[3]), &(cube[2]));
-    Face Y(&(cube[1]), &(cube[4]), &(cube[5]), &(cube[3]), &(cube[2]));
-    Face R(&(cube[2]), &(cube[4]), &(cube[5]), &(cube[1]), &(cube[0]));
-    Face O(&(cube[3]), &(cube[5]), &(cube[4]), &(cube[0]), &(cube[1]));
-    Face B(&(cube[4]), &(cube[1]), &(cube[0]), &(cube[2]), &(cube[3]));
-    Face G(&(cube[5]), &(cube[0]), &(cube[1]), &(cube[2]), &(cube[3]));
+    Face W(&(cube[0]), &(cube[4]), BottomRow, &(cube[5]), TopRow, &(cube[3]), RightCol, &(cube[2]), LeftCol);
+    Face Y(&(cube[1]), &(cube[4]), TopRow, &(cube[5]), BottomRow, &(cube[2]), RightCol, &(cube[3]), LeftCol);
+    Face R(&(cube[2]), &(cube[4]), RightCol, &(cube[5]), RightCol, &(cube[1]), LeftCol, &(cube[0]), RightCol);
+    Face O(&(cube[3]), &(cube[4]), LeftCol, &(cube[5]), LeftCol, &(cube[0]), LeftCol, &(cube[1]), RightCol);
+    Face B(&(cube[4]), &(cube[1]), TopRow, &(cube[0]), TopRow, &(cube[2]), TopRow, &(cube[3]), TopRow);
+    Face G(&(cube[5]), &(cube[0]), BottomRow, &(cube[1]), BottomRow, &(cube[2]), BottomRow, &(cube[3]), BottomRow);
     
 
 
     //testing
     printCube();
-    Y.clockwise();
+    O.clockwise();
     printCube();
     std::cin.get();
     return 0;
